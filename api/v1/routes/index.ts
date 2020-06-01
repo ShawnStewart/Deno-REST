@@ -10,7 +10,7 @@ const getRoutes = (app: Application) => {
 
   // 404
   app.use((ctx, next) => {
-    throw new InvalidEndpointError(ctx.request.url);
+    throw new InvalidEndpointError(ctx.request.method, ctx.request.url);
   });
 };
 

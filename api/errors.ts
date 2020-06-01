@@ -1,11 +1,14 @@
+import { HTTPMethods, Status } from "../deps.ts";
+
 type Url = string | URL;
+type Method = string | HTTPMethods;
 
 export class InternalServerError extends Error {
   status: number;
   message: string;
 
   constructor(
-    status = 500,
+    status = Status.InternalServerError,
     message =
       "The server encountered an internal error and was unable to complete your request",
   ) {
@@ -18,7 +21,7 @@ export class InternalServerError extends Error {
 }
 
 export class InvalidEndpointError extends InternalServerError {
-  constructor(url: Url) {
-    super(404, `${url} is not a valid endpoint`);
+  constructor(method: Method, url: Url) {
+    super(Status.NotFound, `Could not route request: ${method} ${url}`);
   }
 }

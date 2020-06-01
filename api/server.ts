@@ -9,7 +9,14 @@ const app = new Application();
 app.use(async (ctx, next) => {
   await next();
   const responseTime = ctx.response.headers.get("X-Response-Time");
-  console.log(`${ctx.request.method} ${ctx.request.url} - ${responseTime}`);
+  const dateTime = new Date()
+    .toISOString()
+    .replace(/T/, " ")
+    .replace(/\..+/, "");
+
+  console.log(
+    `[${dateTime}]: ${ctx.request.method} ${ctx.request.url} - ${responseTime}`,
+  );
 });
 
 // Timing
@@ -25,12 +32,14 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    if (!err) {
-      err = new InternalServerError();
-    }
+    console.error(err);
 
-    ctx.response.status = err.status;
-    ctx.response.body = err;
+    const error = err instanceof InternalServerError
+      ? err
+      : new InternalServerError(err.status, err.message);
+
+    ctx.response.status = error.status;
+    ctx.response.body = error;
   }
 });
 
