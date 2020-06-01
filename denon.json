@@ -3,5 +3,6 @@
     "$schema": "https://deno.land/x/denon/schema.json",
     "scripts": {
         "start": "app.ts"
-    }
+    },
+    "unstable": true
 }
