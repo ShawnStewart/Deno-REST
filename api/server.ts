@@ -1,3 +1,5 @@
+import { green, red, white } from "https://deno.land/std/fmt/colors.ts";
+
 import { Application } from "../deps.ts";
 import { InternalServerError } from "./errors.ts";
 import getRoutes from "./v1/routes/index.ts";
@@ -13,9 +15,15 @@ app.use(async (ctx, next) => {
     .replace(/T/, " ")
     .replace(/\..+/, "");
 
-  console.log(
+  const color = !ctx.response.status
+    ? white
+    : ctx.response.status < 300
+    ? green
+    : red;
+
+  console.log(color(
     `[${dateTime}]: ${ctx.request.method} ${ctx.request.url} - ${responseTime}`,
-  );
+  ));
 });
 
 // Timing

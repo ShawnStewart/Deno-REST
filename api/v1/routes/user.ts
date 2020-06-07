@@ -11,6 +11,7 @@ interface User {
 const users: User[] = [];
 
 router.get("/users", (ctx) => {
+  ctx.response.status = 200;
   ctx.response.body = { users };
 });
 
