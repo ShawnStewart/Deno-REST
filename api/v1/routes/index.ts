@@ -1,8 +1,6 @@
 import { Application } from "../../../deps.ts";
-
-import userRoutes from "./user.ts";
-
 import { InvalidEndpointError } from "../../errors.ts";
+import userRoutes from "./user.ts";
 
 const getRoutes = (app: Application) => {
   app.use(userRoutes.routes());

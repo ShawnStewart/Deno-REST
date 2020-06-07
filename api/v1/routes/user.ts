@@ -1,4 +1,5 @@
 import { bcrypt, Router } from "../../../deps.ts";
+import { bodyRequired } from "../../utils.ts";
 
 const router = new Router();
 
@@ -13,7 +14,7 @@ router.get("/users", (ctx) => {
   ctx.response.body = { users };
 });
 
-router.post("/users/register", async (ctx) => {
+router.post("/users/register", bodyRequired, async (ctx) => {
   const body = await ctx.request.body();
   const { username, password } = body.value;
 

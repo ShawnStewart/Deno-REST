@@ -1,7 +1,6 @@
 import { Application } from "../deps.ts";
-
-import getRoutes from "./v1/routes/index.ts";
 import { InternalServerError } from "./errors.ts";
+import getRoutes from "./v1/routes/index.ts";
 
 const app = new Application();
 
@@ -31,12 +30,18 @@ app.use(async (ctx, next) => {
 app.use(async (ctx, next) => {
   try {
     await next();
-  } catch (err) {
-    console.error(err);
 
-    const error = err instanceof InternalServerError
-      ? err
-      : new InternalServerError(err.status, err.message);
+    if (!ctx.response.body) {
+      throw new InternalServerError(
+        "Sorry about that! Your request did not fail, but we did not set a response",
+      );
+    }
+  } catch (e) {
+    console.error(e);
+
+    const error = e instanceof InternalServerError
+      ? e
+      : new InternalServerError(e.status, e.message);
 
     ctx.response.status = error.status;
     ctx.response.body = error;

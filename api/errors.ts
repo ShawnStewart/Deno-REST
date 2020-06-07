@@ -8,9 +8,9 @@ export class InternalServerError extends Error {
   message: string;
 
   constructor(
-    status = Status.InternalServerError,
     message =
       "The server encountered an internal error and was unable to complete your request",
+    status = Status.InternalServerError,
   ) {
     super();
 
@@ -22,6 +22,14 @@ export class InternalServerError extends Error {
 
 export class InvalidEndpointError extends InternalServerError {
   constructor(method: Method, url: Url) {
-    super(Status.NotFound, `Could not route request: ${method} ${url}`);
+    super(`Could not route request: ${method} ${url}`, Status.NotFound);
+  }
+}
+
+export class RequestBodyMissing extends InternalServerError {
+  constructor(
+    message = "The request was expected to have a body, but did not have one",
+  ) {
+    super(message, Status.BadRequest);
   }
 }
