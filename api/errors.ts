@@ -20,6 +20,12 @@ export class InternalServerError extends Error {
   }
 }
 
+export class InternalDatabaseError extends InternalServerError {
+  constructor(error: Error) {
+    super(error.message);
+  }
+}
+
 export class InvalidEndpointError extends InternalServerError {
   constructor(method: Method, url: Url) {
     super(`Could not route request: ${method} ${url}`, Status.NotFound);

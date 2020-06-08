@@ -7,7 +7,7 @@ const getRoutes = (app: Application) => {
   app.use(userRoutes.allowedMethods());
 
   // 404
-  app.use((ctx, next) => {
+  app.use((ctx) => {
     throw new InvalidEndpointError(ctx.request.method, ctx.request.url);
   });
 };
