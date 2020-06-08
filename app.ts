@@ -1,8 +1,8 @@
-import "https://deno.land/x/dotenv@v0.4.0/load.ts";
+import "https://deno.land/x/dotenv@v0.4.2/load.ts";
 
 import server from "./api/server.ts";
 
-const port = Number(Deno.env.get("PORT")) || 3000;
+const port = Number(Deno.env.get("APP_PORT")) || 3000;
 
 try {
   console.log(`=== Starting server on port ${port} ===`);
