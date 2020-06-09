@@ -5,7 +5,7 @@ import { bodyRequired } from "../../utils.ts";
 
 const router = new Router();
 
-router.get("/users", async (ctx) => {
+router.get("/api/v1/users", async (ctx) => {
   try {
     const users = await ssQuery(
       "SELECT id, username FROM Users WHERE is_deleted IS false",
@@ -18,7 +18,7 @@ router.get("/users", async (ctx) => {
   }
 });
 
-router.post("/users/register", bodyRequired, async (ctx) => {
+router.post("/api/v1/users/register", bodyRequired, async (ctx) => {
   const body = await ctx.request.body();
   const { username, password, ...rest } = body.value;
   const errors: { [key: string]: string } = {};
