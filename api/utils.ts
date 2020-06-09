@@ -7,6 +7,8 @@ export const bodyRequired = async (ctx: Context, next: Function) => {
   }
 
   try {
+    // Check that body is parsable JSON
+    await ctx.request.body();
     await next();
   } catch (e) {
     throw e;

@@ -49,7 +49,7 @@ app.use(async (ctx, next) => {
 
     const error = e instanceof InternalServerError
       ? e
-      : new InternalServerError(e.status, e.message);
+      : new InternalServerError(e.message, e.status);
 
     ctx.response.status = error.status;
     ctx.response.body = error;

@@ -20,6 +20,16 @@ export class InternalServerError extends Error {
   }
 }
 
+export class ArgumentsError extends InternalServerError {
+  fields: { [key: string]: string };
+
+  constructor(fields: { [key: string]: string }) {
+    super("Invalid arguments were provided", Status.NotAcceptable);
+
+    this.fields = fields;
+  }
+}
+
 export class InternalDatabaseError extends InternalServerError {
   constructor(error: Error) {
     super(error.message);
