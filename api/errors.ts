@@ -38,13 +38,13 @@ export class AuthenticationError extends InternalServerError {
 
 export class EnvironmentVariableMissing extends InternalServerError {
   constructor(key: string) {
-    super(`Missing environment variable: ${key}`);
+    super(`Missing environment variable: ${key}`, 0);
   }
 }
 
 export class InternalDatabaseError extends InternalServerError {
   constructor(error: Error) {
-    super(error.message);
+    super(error.message, 0);
   }
 }
 

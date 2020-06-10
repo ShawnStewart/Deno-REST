@@ -47,9 +47,7 @@ app.use(async (ctx, next) => {
   } catch (e) {
     console.error(e);
 
-    const error = e instanceof InternalServerError
-      ? e
-      : new InternalServerError();
+    const error = !e.status ? new InternalServerError() : e;
 
     ctx.response.status = error.status;
     ctx.response.body = error;
