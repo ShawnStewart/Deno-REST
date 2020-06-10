@@ -1,4 +1,3 @@
-import { ssQuery } from "../../../db/utils.ts";
 import {
   bcrypt,
   makeJwt,
@@ -12,7 +11,7 @@ import {
   AuthenticationError,
   EnvironmentVariableMissing,
 } from "../../errors.ts";
-import { bodyRequired } from "../../utils.ts";
+import { bodyRequired, ssQuery } from "../../utils.ts";
 
 const router = new Router();
 

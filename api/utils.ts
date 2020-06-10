@@ -1,5 +1,8 @@
-import { RequestBodyError } from "./errors.ts";
+import { cyan } from "https://deno.land/std/fmt/colors.ts";
+
+import db from "../db/db.ts";
 import { Context } from "../deps.ts";
+import { InternalDatabaseError, RequestBodyError } from "./errors.ts";
 
 export const bodyRequired = async (ctx: Context, next: Function) => {
   /**
@@ -18,4 +21,26 @@ export const bodyRequired = async (ctx: Context, next: Function) => {
   }
 
   await next();
+};
+
+export const ssQuery = async (query: string, ...args: any[]) => {
+  try {
+    await db.connect();
+    const queryResult = await db.query(query, ...args);
+    await db.end();
+
+    const columnList = queryResult.rowDescription.columns;
+    const formatted = queryResult.rows.map((row) => {
+      return row.reduce((accum: Object, current: any, idx: number) => {
+        return { ...accum, [columnList[idx].name]: current };
+      }, {});
+    });
+    const result = formatted.length === 1 ? formatted[0] : formatted;
+
+    console.info(cyan("ssQuery formatted result:"), result);
+
+    return result;
+  } catch (e) {
+    throw new InternalDatabaseError(e);
+  }
 };
