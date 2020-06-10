@@ -54,9 +54,10 @@ export class InvalidEndpointError extends InternalServerError {
   }
 }
 
-export class RequestBodyMissing extends InternalServerError {
+export class RequestBodyError extends InternalServerError {
   constructor(
-    message = "The request was expected to have a body, but did not have one",
+    message =
+      "The request body was not parsable, please ensure that it is valid",
   ) {
     super(message, Status.BadRequest);
   }
