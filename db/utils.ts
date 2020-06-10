@@ -17,7 +17,7 @@ export const ssQuery = async (query: string, ...args: any[]) => {
       }, {});
     });
     console.info(cyan("ssQuery formatted result:"), formatted);
-    return formatted;
+    return formatted.length === 1 ? formatted[0] : formatted;
   } catch (e) {
     throw new InternalDatabaseError(e);
   }

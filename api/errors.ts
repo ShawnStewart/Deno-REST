@@ -24,9 +24,21 @@ export class ArgumentsError extends InternalServerError {
   fields: { [key: string]: string };
 
   constructor(fields: { [key: string]: string }) {
-    super("Invalid arguments were provided", Status.NotAcceptable);
+    super("Invalid arguments were provided", Status.BadRequest);
 
     this.fields = fields;
+  }
+}
+
+export class AuthenticationError extends InternalServerError {
+  constructor(message = "Invalid login credentials") {
+    super(message, Status.BadRequest);
+  }
+}
+
+export class EnvironmentVariableMissing extends InternalServerError {
+  constructor(key: string) {
+    super(`Missing environment variable: ${key}`);
   }
 }
 
