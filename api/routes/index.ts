@@ -1,5 +1,5 @@
-import { Application } from "../../../deps.ts";
-import { InvalidEndpointError } from "../../errors.ts";
+import { Application } from "../../deps.ts";
+import { InvalidEndpointError } from "../errors.ts";
 import userRoutes from "./user.ts";
 
 const getRoutes = (app: Application) => {

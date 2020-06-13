@@ -5,13 +5,13 @@ import {
   Jose,
   Payload,
   Router,
-} from "../../../deps.ts";
+} from "../../deps.ts";
 import {
   ArgumentsError,
   AuthenticationError,
   EnvironmentVariableMissing,
-} from "../../errors.ts";
-import { bodyRequired, ssQuery } from "../../utils.ts";
+} from "../errors.ts";
+import { bodyRequired, ssQuery } from "../utils.ts";
 
 const router = new Router();
 

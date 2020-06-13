@@ -2,7 +2,7 @@ import { green, red, white } from "https://deno.land/std/fmt/colors.ts";
 
 import { Application } from "../deps.ts";
 import { InternalServerError } from "./errors.ts";
-import getRoutes from "./v1/routes/index.ts";
+import getRoutes from "./routes/index.ts";
 
 const app = new Application();
 
