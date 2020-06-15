@@ -11,11 +11,11 @@ import {
   AuthenticationError,
   EnvironmentVariableMissing,
 } from "../errors.ts";
-import { bodyRequired, ssQuery } from "../utils.ts";
+import { authRequired, bodyRequired, ssQuery } from "../utils.ts";
 
 const router = new Router();
 
-router.get("/api/v1/users", async (ctx) => {
+router.get("/api/v1/users", authRequired, async (ctx) => {
   try {
     const users = await ssQuery(
       "SELECT id, username FROM Users WHERE is_deleted IS false",
@@ -113,7 +113,7 @@ router.post("/api/v1/users/login", bodyRequired, async (ctx) => {
     );
 
     if (!user || !await bcrypt.compare(password, user.password)) {
-      throw new AuthenticationError();
+      throw new AuthenticationError("Invalid login credentials");
     }
 
     // Generate JWT
@@ -134,7 +134,7 @@ router.post("/api/v1/users/login", bodyRequired, async (ctx) => {
     ctx.response.status = 200;
     ctx.response.body = {
       message: "Login successful",
-      token: makeJwt({ header, payload, key }),
+      token: `Bearer ${makeJwt({ header, payload, key })}`,
     };
   } catch (e) {
     throw e;

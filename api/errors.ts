@@ -31,8 +31,14 @@ export class ArgumentsError extends InternalServerError {
 }
 
 export class AuthenticationError extends InternalServerError {
-  constructor(message = "Invalid login credentials") {
+  constructor(message = "We were unable to authenticate your request") {
     super(message, Status.BadRequest);
+  }
+}
+
+export class AuthorizationError extends InternalServerError {
+  constructor(message = "You are not authorized to access this resource") {
+    super(message, Status.Unauthorized);
   }
 }
 

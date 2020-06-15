@@ -1,8 +1,27 @@
 import { cyan } from "https://deno.land/std/fmt/colors.ts";
 
 import db from "../db/db.ts";
-import { Context } from "../deps.ts";
-import { InternalDatabaseError, RequestBodyError } from "./errors.ts";
+import { Context, validateJwt } from "../deps.ts";
+import {
+  AuthenticationError,
+  EnvironmentVariableMissing,
+  InternalDatabaseError,
+  RequestBodyError,
+} from "./errors.ts";
+
+export const authRequired = async (ctx: Context, next: Function) => {
+  const key = Deno.env.get("JWT_SECRET");
+  let token = ctx.request.headers.get("Authorization") || "";
+  token = token.replace("Bearer ", "");
+
+  if (!key) {
+    throw new EnvironmentVariableMissing("JWT_SECRET");
+  } else if (!token || !await validateJwt(token, key, { isThrowing: false })) {
+    throw new AuthenticationError();
+  }
+
+  await next();
+};
 
 export const bodyRequired = async (ctx: Context, next: Function) => {
   /**
