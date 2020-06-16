@@ -1,16 +1,5 @@
-import {
-  bcrypt,
-  makeJwt,
-  setExpiration,
-  Jose,
-  Payload,
-  Router,
-} from "../../deps.ts";
-import {
-  ArgumentsError,
-  AuthenticationError,
-  EnvironmentVariableMissing,
-} from "../errors.ts";
+import { bcrypt, CookiesSetDeleteOptions, Router } from "../../deps.ts";
+import { ArgumentsError, AuthenticationError } from "../errors.ts";
 import { authRequired, bodyRequired, ssQuery } from "../utils.ts";
 
 const router = new Router();
@@ -116,26 +105,16 @@ router.post("/api/v1/users/login", bodyRequired, async (ctx) => {
       throw new AuthenticationError("Invalid login credentials");
     }
 
-    // Generate JWT
-    const header: Jose = {
-      alg: "HS256",
-      type: "JWT",
+    const cookieOptions: CookiesSetDeleteOptions = {
+      httpOnly: true,
+      maxAge: 30 * 1000,
+      overwrite: false,
+      secure: false,
+      signed: true,
     };
-    const payload: Payload = {
-      iss: "Deno-REST Authentication",
-      exp: setExpiration(new Date().getTime() + 7 * 60 * 60 * 1000),
-    };
-    const key = Deno.env.get("JWT_SECRET");
-
-    if (!key) {
-      throw new EnvironmentVariableMissing("JWT_SECRET");
-    }
-
+    ctx.cookies.set("ssuid", user.id, cookieOptions);
     ctx.response.status = 200;
-    ctx.response.body = {
-      message: "Login successful",
-      token: `Bearer ${makeJwt({ header, payload, key })}`,
-    };
+    ctx.response.body = { message: "Login successful" };
   } catch (e) {
     throw e;
   }

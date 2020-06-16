@@ -1,10 +1,17 @@
 import { green, red, white } from "https://deno.land/std/fmt/colors.ts";
 
 import { Application } from "../deps.ts";
-import { InternalServerError } from "./errors.ts";
+import { EnvironmentVariableMissing, InternalServerError } from "./errors.ts";
 import getRoutes from "./routes/index.ts";
 
+const COOKIE_SECRET = Deno.env.get("COOKIE_SECRET");
+
+if (!COOKIE_SECRET) {
+  throw new EnvironmentVariableMissing("COOKIE_SECRET");
+}
+
 const app = new Application();
+app.keys = [COOKIE_SECRET];
 
 // Logger
 app.use(async (ctx, next) => {
